@@ -51,7 +51,7 @@ describe("GET /api/reviews", () => {
         })
       })
   });
-  test.only("GET:200 array is sorted by descending order by default ", () => {
+  test("GET:200 array is sorted by descending order by default ", () => {
     return request(app)
       .get("/api/reviews")
       .expect(200)
@@ -60,3 +60,25 @@ describe("GET /api/reviews", () => {
   });
 })
 })
+
+describe('5-GET/api/reviews/:review_id', () => {
+  test.only('status:200, responds with a single matching revew object', () => {
+    const review_id = 2;
+    return request(app)
+      .get(`/api/reviews/${review_id}`)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.reviews).toEqual({
+          review_id: 2,
+    title: 'Jenga',
+    category: 'dexterity',
+    designer: 'Leslie Scott',
+    owner: 'philippaclaire9',
+    review_body: 'Fiddly fun for all the family',
+    review_img_url: 'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
+    created_at: '2021-01-18T10:01:41.251Z',
+    votes: 5
+        });
+      });
+  });
+});
