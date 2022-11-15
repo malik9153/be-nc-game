@@ -1,6 +1,6 @@
  const app = require("../app.js");
 const data = require("../db/data/test-data");
-const db = require("../db/data/test-data/index");
+const db = require("../db/connection.js");
 const seed = require("../db/seeds/seed");
 const request = require("supertest");
 
@@ -8,9 +8,11 @@ beforeEach(() => {
   return seed(data);
 });
 
-// afterAll(() => {
-//   db.end();
-// });
+afterAll(() => {
+ 
+ return db.end();
+  
+});
 
 describe("GET /api/categories", () => {
   test("response containing an array of category objects, each of which should have the following properties slug, description", () => {
@@ -62,7 +64,7 @@ describe("GET /api/reviews", () => {
 })
 
 describe('5-GET/api/reviews/:review_id', () => {
-  test.only('status:200, responds with a single matching revew object', () => {
+  test('status:200, responds with a single matching revew object', () => {
     const review_id = 2;
     return request(app)
       .get(`/api/reviews/${review_id}`)
