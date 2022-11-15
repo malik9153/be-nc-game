@@ -51,4 +51,12 @@ describe("GET /api/reviews", () => {
         })
       })
   });
+  test.only("GET:200 array is sorted by descending order by default ", () => {
+    return request(app)
+      .get("/api/reviews")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toBeSortedBy('created_at', { descending: true });
+  });
+})
 })

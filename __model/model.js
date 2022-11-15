@@ -15,7 +15,11 @@ exports.SelectCategories = () => {
 };
 
 exports.SelectReviews = (order = "DESC" ) => {
-
+  const validOrder = ["DESC"];
+  if (!validOrder.includes(order)) {
+    console.log("model reject");
+    return Promise.reject({ status: 400, msg: "invalid order query!" });
+  }
   return db
     .query(
       `
@@ -27,7 +31,7 @@ ON (reviews.review_id = comments.review_id)
 GROUP BY
 reviews.review_id
 
-ORDER BY reviews ${order};
+ORDER BY reviews.created_at ${order};
 
     `
     )
