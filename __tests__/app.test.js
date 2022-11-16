@@ -114,7 +114,7 @@ describe('6. GET /api/reviews/:review_id/comments', () => {
       })
   });
 
-  test.only('GET 200- get empty array if review_id exists but has no comments ', () => {
+  test('GET 200- get empty array if review_id exists but has no comments ', () => {
     const review_id = 1;
     return request(app)
       .get(`/api/reviews/${review_id}/comments`)
