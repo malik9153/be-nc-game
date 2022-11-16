@@ -4,7 +4,6 @@ const db = require("../db/connection.js");
 exports.SelectReviews = (order = "DESC" ) => {
     const validOrder = ["DESC"];
     if (!validOrder.includes(order)) {
-      console.log("model reject");
       return Promise.reject({ status: 400, msg: "invalid order query!" });
     }
     return db

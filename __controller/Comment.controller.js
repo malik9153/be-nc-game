@@ -17,7 +17,8 @@ exports.getCommentById = (req, res, next) => {
 exports.postCommentById = (req, res, next) => {
 
 const {review_id} = req.params
-
+console.log(req.params)
+console.log(req.body)
 InsertComment(review_id,req.body)  
     .then((comment) => {
   res.status(200).send({comment});

@@ -10,7 +10,7 @@ beforeEach(() => {
 });
 
 afterAll(() => {
-  db.end();
+  return db.end();
 });
 
 describe("GET /api/categories", () => {
@@ -120,11 +120,14 @@ describe('6. GET /api/reviews/:review_id/comments', () => {
 });
 
 describe(`7. POST /api/reviews/:review_id/comments`, () => {
-  test(`responds with the posted comment`, () => {
+  test.only(`responds with the posted comment`, () => {
     return request(app)
     .post('/api/reviews/1/comments')
-    .send({username:"Hagindas"},
-      {body:"I loved this game too!"})
+    .send(
+      {
+        username:"Hagindas",
+        body:"I loved this game too!"
+    })
     .expect(201)
     .then(({body}) => {
       expect(body.comment).toEqual({ 
@@ -132,7 +135,7 @@ describe(`7. POST /api/reviews/:review_id/comments`, () => {
       votes: 0,
       author: 'Hagindas',
       review_id: 1,
-      created_at: new Date(1511354613389),
+      created_at: Date.now(),
 
       })
     })
