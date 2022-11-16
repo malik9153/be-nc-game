@@ -1,5 +1,6 @@
-const { getCategories ,getReviews,getReviewById,getCommentById} = require("./controller/controller");
-
+const { getCategories} = require("./__controller/Categories.controller");
+const { getReviews,getReviewById} = require("./__controller/Reviews.controller");
+const { getCommentById} = require("./__controller/Comment.controller");
 const express = require("express");
 const app = express();
 
