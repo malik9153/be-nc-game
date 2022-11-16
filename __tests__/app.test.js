@@ -36,8 +36,7 @@ describe("GET /api/reviews", () => {
       .get("/api/reviews")
       .expect(200)
       .then(({body}) => {
-
-        body.reviews.forEach((category) => {
+          body.reviews.forEach((category) => {
           expect(category).toMatchObject({
             review_id:expect.any(Number),
             title:expect.any(String),
@@ -100,14 +99,31 @@ describe('6. GET /api/reviews/:review_id/comments', () => {
     return request(app)
       .get(`/api/reviews/${review_id}/comments`)
       .expect(200)
+      
+      .then(({body}) => {
+        expect(body.comments.length).toBeGreaterThan(0);
+        body.comments.forEach((comment) => {
+          expect(comment).toMatchObject({
+            body:expect.any(String),
+            author:expect.any(String),
+            review_id:expect.any(Number),
+            votes:expect.any(Number),
+            created_at:expect.any(String),
+          })
+        })
+      })
+  });
+
+  test.only('GET 200- get empty array if review_id exists but has no comments ', () => {
+    const review_id = 1;
+    return request(app)
+      .get(`/api/reviews/${review_id}/comments`)
+      .expect(200)
       .then(({ body }) => {
-        expect(body.comment).toEqual([
-        {"author": "mallionaire", "body": "My dog loved this game too!", "comment_id": 2, "created_at": "2021-01-18T10:09:05.410Z", "review_id": 3, "votes": 13},
-        {"author": "philippaclaire9", "body": "I didn't know dogs could play games", "comment_id": 3, "created_at": "2021-01-18T10:09:48.110Z", "review_id": 3, "votes": 10},
-        {"author": "philippaclaire9", "body": "Not sure about dogs, but my cat likes to get involved with board games, the boxes are their particular favourite", "comment_id": 6, "created_at": "2021-03-27T19:49:48.110Z", "review_id": 3, "votes": 10}
-      ]);
+        expect(body.comments).toEqual([]);
       });
   });
+ 
   test('GET 404- valid but non-existent review_id ', () => {
     const review_id = 1000;
     return request(app)
@@ -117,5 +133,5 @@ describe('6. GET /api/reviews/:review_id/comments', () => {
         expect(body.msg).toEqual('ID not found !');
       });
   });
-});
 
+ });
