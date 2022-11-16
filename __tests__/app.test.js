@@ -10,7 +10,7 @@ beforeEach(() => {
 });
 
 afterAll(() => {
-  db.end();
+  return db.end();
 });
 
 describe("GET /api/categories", () => {
