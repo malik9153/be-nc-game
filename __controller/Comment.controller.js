@@ -1,5 +1,5 @@
 
-const {SelectCommentById} = require("../__model/Comment.models");
+const {SelectCommentById,InsertComment} = require("../__model/Comment.models");
 
 exports.getCommentById = (req, res, next) => {
 
@@ -13,3 +13,16 @@ exports.getCommentById = (req, res, next) => {
          next(err);
     })
     }
+
+exports.postCommentById = (req, res, next) => {
+
+const {review_id} = req.params
+
+InsertComment(review_id,req.body)  
+    .then((comment) => {
+  res.status(200).send({comment});
+        })
+    .catch((err) => {
+     next(err);
+        })
+        }
