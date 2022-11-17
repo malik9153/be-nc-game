@@ -81,7 +81,10 @@ describe('5-GET/api/reviews/:review_id', () => {
     votes: 5
         });
       });
+
+     
   })
+  
   test('GET 404- valid but non-existent review_id ', () => {
     const review_id = 1000000;
     return request(app)
@@ -243,4 +246,38 @@ describe(`8. PATCH /api/reviews/:review_id`, () => {
     })
      
   })
+})
+
+describe(" GET /api/users", () => {
+  test("response containing an array of objects, each object should have the following property:`username,name,avatar_url`", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then(({body}) => {
+        body.users.forEach((object) => {
+          expect(object).toMatchObject({
+            username:expect.any(String),
+            name:expect.any(String),
+            avatar_url:expect.any(String)
+          })
+        })
+      })
+  });
+})
+
+describe("GET /api/reviews/:review_id (comment count)", () => {
+  test("response containing an array of objects, each object should have the following property:`username,name,avatar_url`", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then(({body}) => {
+        body.users.forEach((object) => {
+          expect(object).toMatchObject({
+            username:expect.any(String),
+            name:expect.any(String),
+            avatar_url:expect.any(String)
+          })
+        })
+      })
+  });
 })
