@@ -3,7 +3,7 @@ const { getReviews,getReviewById} = require("./__controller/Reviews.controller")
 const { getCommentById,postCommentById} = require("./__controller/Comment.controller");
 const express = require("express");
 const app = express();
-
+app.use(express.json())
 
 app.get("/api/categories", getCategories);
 app.get("/api/reviews", getReviews);

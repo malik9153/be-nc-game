@@ -5,6 +5,7 @@ const seed = require("../db/seeds/seed");
 const request = require("supertest");
 
 
+
 beforeEach(() => {
   return seed(data);
 });
@@ -120,12 +121,12 @@ describe('6. GET /api/reviews/:review_id/comments', () => {
 });
 
 describe(`7. POST /api/reviews/:review_id/comments`, () => {
-  test.only(`responds with the posted comment`, () => {
+  test(`responds with the posted comment`, () => {
     return request(app)
-    .post('/api/reviews/1/comments')
+    .post('/api/reviews/3/comments')
     .send(
       {
-        username:"Hagindas",
+        username:"mallionaire",
         body:"I loved this game too!"
     })
     .expect(201)
@@ -133,11 +134,37 @@ describe(`7. POST /api/reviews/:review_id/comments`, () => {
       expect(body.comment).toEqual({ 
       body: 'I loved this game too!',
       votes: 0,
-      author: 'Hagindas',
-      review_id: 1,
-      created_at: Date.now(),
+      author: 'mallionaire',
+      comment_id: 7,
+      review_id: 3,
+      created_at: expect.any(String),
 
       })
     })
+  })
+  test(`responds with an error if post body is empty or missing one of paremters`,() => {
+    return request(app)
+    .post('/api/reviews/3/comments')
+    .send({username:"mallionaire"})
+    .expect(400)
+    .then(({body}) => {
+      expect(body.msg).toEqual("POST body empty or missing parameter")
+    })
+     
+  })
+
+  test(`GET 404- valid but non-existent review_id`,() => {
+    return request(app)
+    .post('/api/reviews/10000/comments')
+    .send(
+      {
+        username:"mallionaire",
+        body:"I loved this game too!"
+    })
+    .expect(404)
+    .then(({body}) => {
+      expect(body.msg).toEqual("ID not found !")
+    })
+     
   })
 })

@@ -17,13 +17,14 @@ exports.getCommentById = (req, res, next) => {
 exports.postCommentById = (req, res, next) => {
 
 const {review_id} = req.params
-console.log(req.params)
-console.log(req.body)
 InsertComment(review_id,req.body)  
     .then((comment) => {
-  res.status(200).send({comment});
-        })
+        res.status(201).send({comment});
+    })
     .catch((err) => {
-     next(err);
-        })
+        if(err.code === '23502'){
+            res.status(400).send({msg:'POST body empty or missing parameter'})
         }
+        next(err);
+    })
+}
