@@ -33,10 +33,11 @@ exports.SelectReviews = (order = "DESC" ) => {
       console.log("hi2")
     return db
       .query( `
-      SELECT reviews.*  WHERE review_id = $1, count(comments.review_id) as comment_count        
+      SELECT reviews.* , count(comments.review_id) as comment_count        
       FROM reviews
       left join comments
       ON (reviews.review_id = comments.review_id)
+      WHERE review_id = $1
       GROUP BY
       reviews.review_id;`, [review_id])
       .then((result) => {

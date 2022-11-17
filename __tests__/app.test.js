@@ -62,14 +62,14 @@ describe("GET /api/reviews", () => {
 })
 })
 
-describe('5-GET/api/reviews/:review_id', () => {
+describe.only('5-GET/api/reviews/:review_id', () => {
   test('status:200, responds with a single matching review object ', () => {
     const review_id = 2;
     return request(app)
       .get(`/api/reviews/${review_id}`)
       .expect(200)
       .then(({ body }) => {
-        expect(body.reviews).toEqual({
+        expect(body.reviews).toMatchObject({
           review_id: 2,
     title: 'Jenga',
     category: 'dexterity',
@@ -85,7 +85,7 @@ describe('5-GET/api/reviews/:review_id', () => {
      
   })
 
-  test.only('status:200, responds with a single matching review object with additional comment count ', () => {
+  test('status:200, responds with a single matching review object with additional comment count ', () => {
     const review_id = 2;
     return request(app)
       .get(`/api/reviews/${review_id}`)
@@ -100,7 +100,8 @@ describe('5-GET/api/reviews/:review_id', () => {
     review_body: 'Fiddly fun for all the family',
     review_img_url: 'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
     created_at: '2021-01-18T10:01:41.251Z',
-    votes: 5
+    votes: 5,
+    comment:3
         });
       });
 
