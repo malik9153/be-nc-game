@@ -51,8 +51,18 @@ describe("GET /api/reviews", () => {
           })
         })
       })
+      
   });
-  test("GET:200 array is sorted by date descending order by default ", () => {
+  test("GET:200 array is sorted by date ascending order  ", () => {
+    return request(app)
+      .get("/api/reviews?order=ASC")
+      .expect(200)
+      .then(({body}) => {
+          expect(body.reviews).toBeSortedBy('created_at', { ascending: true });
+    });
+      })
+
+ test("GET:200 array is sorted by date descending order by default ", () => {
     return request(app)
       .get("/api/reviews")
       .expect(200)
@@ -60,7 +70,62 @@ describe("GET /api/reviews", () => {
         expect(body.reviews).toBeSortedBy('created_at', { descending: true });
   });
 })
+
+test("GET:200 array is sorted by date ascending order  ", () => {
+  return request(app)
+    .get("/api/reviews?sort_by=review_id")
+    .expect(200)
+    .then(({body}) => {
+        expect(body.reviews).toBeSortedBy('review_id', { descending: true });
+  });
+    })
+
+  test("GET:200 selects the reviews by the category value specified in the query ", () => {
+    return request(app)
+      .get("/api/reviews?category=euro game")
+      .expect(200)
+      .then(({body}) => {
+          body.reviews.forEach((category) => {
+          expect(category).toMatchObject({
+            review_id:expect.any(Number),
+            title:expect.any(String),
+            designer:expect.any(String),
+            owner:expect.any(String),
+            review_img_url:expect.any(String),
+            review_body:expect.any(String),
+            category:expect.any(String),
+            created_at:expect.any(String),
+            votes:expect.any(Number),
+            comment_count:expect.any(String)
+          })
+        })
+      })
+}) 
+
+test("GET:200 selects the reviews by the all the values specified in the query ", () => {
+  return request(app)
+    .get("/api/reviews?category=euro game&sort_by=review_id&order=ASC")
+    .expect(200)
+    .then(({body}) => {
+        body.reviews.forEach((category) => {
+        expect(category).toMatchObject({
+          review_id:expect.any(Number),
+          title:expect.any(String),
+          designer:expect.any(String),
+          owner:expect.any(String),
+          review_img_url:expect.any(String),
+          review_body:expect.any(String),
+          category:expect.any(String),
+          created_at:expect.any(String),
+          votes:expect.any(Number),
+          comment_count:expect.any(String)
+        })
+      })
+    })
+}) 
 })
+
+
 
 describe('5-GET/api/reviews/:review_id', () => {
   test('status:200, responds with a single matching review object ', () => {
@@ -286,5 +351,29 @@ describe(" GET /api/users", () => {
         })
       })
   });
+  
 })
 
+
+describe("12. DELETE /api/comments/:comment_id", () => {
+  test("delete the given comment by `comment_id && responds with status 204 and no content ", () => {
+    return request(app)
+      .delete("/api/comments/2")
+      .expect(204)
+      .then(({body}) => {
+        console.log(body)
+        expect(Object.keys(body).length).toEqual(0)
+      })
+  });
+  test("responds with ID  not found if comment id is not included ", () => {
+    return request(app)
+      .delete("/api/comments/10000")
+
+      .expect(404)
+        
+        .then(({body}) => {
+          expect(body.msg).toEqual("ID not found !")
+        })
+         
+      })
+})

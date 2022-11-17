@@ -1,10 +1,11 @@
-const {  SelectReviews , SelectReviewById} = require("../__model/Reviews.model");
+const {  SelectReviews , SelectReviewById ,patchComment} = require("../__model/Reviews.model");
 
 
 
 exports.getReviews = (req, res, next) => {
-
-    SelectReviews()  
+  console.log(req.query)
+if( Object.keys(req.query).length === 0){
+ ; SelectReviews()  
     .then((reviews) => {
         res.status(200).send({reviews});
       })
@@ -12,7 +13,24 @@ exports.getReviews = (req, res, next) => {
  
         next(err);
       });
-    }
+    
+  }else{
+    console.log(req.query)
+  const { sort_by, order, category} = req.query;
+  SelectReviews(order,sort_by,category)  
+  .then((reviews) => {
+      res.status(200).send({reviews});
+    })
+    .catch((err) => {
+
+      next(err);
+    })
+  }
+
+}
+
+
+
 
 exports.getReviewById = (req, res, next) => {
    const {review_id} = req.params

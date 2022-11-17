@@ -1,4 +1,4 @@
-const {SelectCommentById,InsertComment,patchComment} = require("../__model/Comment.models");
+const {SelectCommentById,InsertComment,patchComment,delComment} = require("../__model/Comment.models");
 
 exports.getCommentById = (req, res, next) => {
 
@@ -38,4 +38,17 @@ exports.patchReviewById = (req, res,next) => {
         next(err);
       })
   }
+
+exports.deleteComment = (req, res,next) => {
+  const {comment_id} = req.params
+    
+  delComment(comment_id)  
+  .then(() => {
+    console.log("hi2")
+      res.status(204).send({});
+    })
+    .catch((err) => {
+      next(err);
+    })
+}
   

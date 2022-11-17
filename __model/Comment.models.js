@@ -1,5 +1,5 @@
 const db = require("../db/connection.js");
-const {checkIDExists} = require("../db/seeds/utils");
+const {checkIDExists,checkCommentExists} = require("../db/seeds/utils");
 
 exports.SelectCommentById = (review_id) => {
 return checkIDExists(review_id).then(() => {
@@ -50,3 +50,17 @@ exports.patchComment = (rev_id,votes) => {
    }
   })
   }
+
+
+
+  exports.delComment = (commentId) => {
+    return checkCommentExists(commentId).then(() => {
+      console.log("hi")
+    return db
+    .query(`DELETE FROM comments WHERE comments.comment_id = $1`,[commentId])
+   })
+  }
+   
+
+  
+  
