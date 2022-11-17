@@ -62,7 +62,7 @@ describe("GET /api/reviews", () => {
 })
 })
 
-describe.only('5-GET/api/reviews/:review_id', () => {
+describe('5-GET/api/reviews/:review_id', () => {
   test('status:200, responds with a single matching review object ', () => {
     const review_id = 2;
     return request(app)
@@ -101,7 +101,7 @@ describe.only('5-GET/api/reviews/:review_id', () => {
     review_img_url: 'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
     created_at: '2021-01-18T10:01:41.251Z',
     votes: 5,
-    comment:3
+    comment_count:'3'
         });
       });
 
@@ -222,7 +222,7 @@ describe(`8. PATCH /api/reviews/:review_id`, () => {
       )
     .expect(200)
     .then(({body}) => {
-      expect(body.reviews).toEqual([
+      expect(body.reviews).toMatchObject([
         {category: "social deduction",
         created_at: "2021-01-18T10:01:41.251Z", 
         designer: "Akihisa Okui",
@@ -244,7 +244,7 @@ describe(`8. PATCH /api/reviews/:review_id`, () => {
       )
     .expect(200)
     .then(({body}) => {
-      expect(body.reviews).toEqual([
+      expect(body.reviews).toMatchObject([
         {category: "social deduction",
         created_at: "2021-01-18T10:01:41.251Z", 
         designer: "Akihisa Okui",
@@ -288,19 +288,3 @@ describe(" GET /api/users", () => {
   });
 })
 
-describe("GET /api/reviews/:review_id (comment count)", () => {
-  test("response containing an array of objects, each object should have the following property:`username,name,avatar_url`", () => {
-    return request(app)
-      .get("/api/users")
-      .expect(200)
-      .then(({body}) => {
-        body.users.forEach((object) => {
-          expect(object).toMatchObject({
-            username:expect.any(String),
-            name:expect.any(String),
-            avatar_url:expect.any(String)
-          })
-        })
-      })
-  });
-})

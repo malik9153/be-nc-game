@@ -37,7 +37,7 @@ exports.SelectReviews = (order = "DESC" ) => {
       FROM reviews
       left join comments
       ON (reviews.review_id = comments.review_id)
-      WHERE review_id = $1
+      WHERE reviews.review_id = $1 
       GROUP BY
       reviews.review_id;`, [review_id])
       .then((result) => {
