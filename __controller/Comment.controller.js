@@ -1,4 +1,4 @@
-const {SelectCommentById,InsertComment} = require("../__model/Comment.models");
+const {SelectCommentById,InsertComment,patchComment} = require("../__model/Comment.models");
 
 exports.getCommentById = (req, res, next) => {
 
@@ -26,3 +26,16 @@ res.status(400).send({msg:'POST body empty or missing parameter'})
 next(err);
 })
 }
+
+exports.patchReviewById = (req, res,next) => {
+    const {review_id} = req.params
+    
+    patchComment(review_id,req.body)  
+    .then((reviews) => {
+        res.status(200).send({reviews});
+      })
+      .catch((err) => {
+        next(err);
+      })
+  }
+  

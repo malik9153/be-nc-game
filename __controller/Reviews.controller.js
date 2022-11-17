@@ -1,4 +1,4 @@
-const {  SelectReviews , SelectReviewById, patchComment} = require("../__model/Reviews.model");
+const {  SelectReviews , SelectReviewById} = require("../__model/Reviews.model");
 
 
 

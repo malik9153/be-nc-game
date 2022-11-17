@@ -22,3 +22,31 @@ return result.rows[0]
 
 })
 }
+
+exports.patchComment = (rev_id,votes) => {
+    const {inc_votes} = votes
+    return checkIDExists(rev_id).then(() => {
+   if(inc_votes > 0)
+   {
+    return db
+    .query(`UPDATE reviews 
+              SET votes = votes + ${inc_votes}
+              WHERE review_id = ${rev_id}
+              RETURNING * `)
+    .then((result) => {
+        return result.rows;
+      });
+   }
+   else
+   {
+    return db
+    .query(`UPDATE reviews 
+              SET votes = votes  ${inc_votes}
+              WHERE review_id =  ${rev_id}
+              RETURNING * `)
+    .then((result) => {
+        return result.rows;
+      });
+   }
+  })
+  }
