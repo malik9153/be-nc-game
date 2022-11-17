@@ -187,3 +187,60 @@ describe('6. GET /api/reviews/:review_id/comments', () => {
 })
 
  
+describe(`8. PATCH /api/reviews/:review_id`, () => {
+  test(`responds with the updated review`, () => {
+    return request(app)
+    .patch('/api/reviews/3')
+    .send(
+      { inc_votes : 5 }
+      )
+    .expect(200)
+    .then(({body}) => {
+      expect(body.reviews).toEqual([
+        {category: "social deduction",
+        created_at: "2021-01-18T10:01:41.251Z", 
+        designer: "Akihisa Okui",
+        owner: "bainesface",
+        review_body: "We couldn't find the werewolf!",
+        review_id: 3,
+        review_img_url: "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+        title: "Ultimate Werewolf",
+        votes: 10
+      }])
+    })
+  })
+
+  test(`responds with the updated review when inc votes has a negetive number`, () => {
+    return request(app)
+    .patch('/api/reviews/3')
+    .send(
+      { inc_votes : -5 }
+      )
+    .expect(200)
+    .then(({body}) => {
+      expect(body.reviews).toEqual([
+        {category: "social deduction",
+        created_at: "2021-01-18T10:01:41.251Z", 
+        designer: "Akihisa Okui",
+        owner: "bainesface",
+        review_body: "We couldn't find the werewolf!",
+        review_id: 3,
+        review_img_url: "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+        title: "Ultimate Werewolf",
+        votes: 0
+      }])
+    })
+  })
+  test(`GET 404- valid but non-existent review_id`,() => {
+    return request(app)
+    .patch('/api/reviews/10000')
+    .send(
+      { inc_votes : -5 }
+      )
+    .expect(404)
+    .then(({body}) => {
+      expect(body.msg).toEqual("ID not found !")
+    })
+     
+  })
+})

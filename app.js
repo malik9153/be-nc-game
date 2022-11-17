@@ -1,5 +1,5 @@
 const { getCategories} = require("./__controller/Categories.controller");
-const { getReviews,getReviewById} = require("./__controller/Reviews.controller");
+const { getReviews,getReviewById, patchReviewById} = require("./__controller/Reviews.controller");
 const { getCommentById,postCommentById} = require("./__controller/Comment.controller");
 const express = require("express");
 const app = express();
@@ -11,6 +11,9 @@ app.get("/api/reviews/:review_id", getReviewById);
 app.get("/api/reviews/:review_id/comments", getCommentById);
 
 app.post("/api/reviews/:review_id/comments", postCommentById);
+
+
+app.patch('/api/reviews/:review_id', patchReviewById)
 
 app.use((err,req,res,next) =>{
 if(err.status && err.msg){

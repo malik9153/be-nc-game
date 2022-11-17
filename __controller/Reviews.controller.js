@@ -1,4 +1,4 @@
-const {  SelectReviews , SelectReviewById} = require("../__model/Reviews.model");
+const {  SelectReviews , SelectReviewById, patchComment} = require("../__model/Reviews.model");
 
 
 
@@ -24,3 +24,15 @@ exports.getReviewById = (req, res, next) => {
        next(err);
      })
     }
+
+exports.patchReviewById = (req, res,next) => {
+  const {review_id} = req.params
+  
+  patchComment(review_id,req.body)  
+  .then((reviews) => {
+      res.status(200).send({reviews});
+    })
+    .catch((err) => {
+      next(err);
+    })
+}
