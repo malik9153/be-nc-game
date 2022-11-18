@@ -1,5 +1,5 @@
 const db = require("../db/connection.js");
-const {checkIDExists} = require("../db/seeds/utils");
+const {checkIDExists,checkCommentExists} = require("../db/seeds/utils");
 
 exports.SelectCommentById = (review_id) => {
 return checkIDExists(review_id).then(() => {
@@ -22,3 +22,44 @@ return result.rows[0]
 
 })
 }
+
+exports.patchComment = (rev_id,votes) => {
+    const {inc_votes} = votes
+    return checkIDExists(rev_id).then(() => {
+   if(inc_votes > 0)
+   {
+    return db
+    .query(`UPDATE reviews 
+              SET votes = votes + ${inc_votes}
+              WHERE review_id = ${rev_id}
+              RETURNING * `)
+    .then((result) => {
+        return result.rows;
+      });
+   }
+   else
+   {
+    return db
+    .query(`UPDATE reviews 
+              SET votes = votes  ${inc_votes}
+              WHERE review_id =  ${rev_id}
+              RETURNING * `)
+    .then((result) => {
+        return result.rows;
+      });
+   }
+  })
+  }
+
+
+
+  exports.delComment = (commentId) => {
+    return checkCommentExists(commentId).then(() => {
+    return db
+    .query(`DELETE FROM comments WHERE comments.comment_id = $1`,[commentId])
+   })
+  }
+   
+
+  
+  
