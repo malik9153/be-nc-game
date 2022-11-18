@@ -3,7 +3,7 @@ const data = require("../db/data/test-data");
 const db = require("../db/connection");
 const seed = require("../db/seeds/seed");
 const request = require("supertest");
-
+const endpoints = require('../endpoints.json')
 
 beforeEach(() => {
   return seed(data);
@@ -12,6 +12,17 @@ beforeEach(() => {
 afterAll(() => {
   return db.end();
 });
+
+describe("GET /api", () => {
+  test.only("all api reqeusts", () => {
+    return request(app)
+      .get("/api")
+      .expect(200)
+      .then(({body}) => {
+          expect(body.endpoints).toMatchObject(endpoints)
+      })
+  });
+})
 
 describe("GET /api/categories", () => {
   test("response containing an array of category objects, each of which should have the following properties slug, description", () => {

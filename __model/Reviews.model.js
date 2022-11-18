@@ -49,7 +49,7 @@ exports.SelectReviews = (order = "DESC", sort_by = "created_at" ,category ) => {
   
   exports.SelectReviewById = (review_id) => {
     return checkIDExists(review_id).then(() => {
-      console.log(review_id)
+
     return db
       .query( `
       SELECT reviews.* , count(comments.review_id) as comment_count        
@@ -60,7 +60,6 @@ exports.SelectReviews = (order = "DESC", sort_by = "created_at" ,category ) => {
       GROUP BY
       reviews.review_id;`, [review_id])
       .then((result) => {
-        console.log(result.rows)
         return result.rows[0]});
   })
 }

@@ -3,7 +3,6 @@ const {  SelectReviews , SelectReviewById ,patchComment} = require("../__model/R
 
 
 exports.getReviews = (req, res, next) => {
-  console.log(req.query)
 if( Object.keys(req.query).length === 0){
  ; SelectReviews()  
     .then((reviews) => {
@@ -15,7 +14,6 @@ if( Object.keys(req.query).length === 0){
       });
     
   }else{
-    console.log(req.query)
   const { sort_by, order, category} = req.query;
   SelectReviews(order,sort_by,category)  
   .then((reviews) => {
